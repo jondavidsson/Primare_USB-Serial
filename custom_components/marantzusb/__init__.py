@@ -1,1 +1,1 @@
-"""Marantz media player component"""
+"""Primare media player component"""
