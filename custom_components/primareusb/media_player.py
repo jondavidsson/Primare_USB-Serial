@@ -108,12 +108,12 @@ class Primare(MediaPlayerEntity):
 
     def update(self):
         """Retrieve latest state."""
-        if self._primare_receiver.main_power('W', 'R') == '1':
+        if self._primare_receiver.main_power('W', 'R') == '\x00':
             self._state = STATE_OFF
         else:
             self._state = STATE_ON
 
-        if self._primare_receiver.main_mute('W', 'R') == '1':
+        if self._primare_receiver.main_mute('W', 'R') == '\x01':
             self._mute = False
         else:
             self._mute = True
@@ -174,9 +174,9 @@ class Primare(MediaPlayerEntity):
     def mute_volume(self, mute):
         """Mute (true) or unmute (false) media player."""
         if mute:
-            self._primare_receiver.main_mute('W', '\x89\x01')
+            self._primare_receiver.main_mute('W', '\x01')
         else:
-            self._primare_receiver.main_mute('W', '\x89\x00')
+            self._primare_receiver.main_mute('W', '\x00')
             
     @property
     def source(self):
