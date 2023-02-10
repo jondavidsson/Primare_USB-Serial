@@ -22,6 +22,8 @@ import homeassistant.helpers.config_validation as cv
 
 _LOGGER = logging.getLogger(__name__)
 
+_LOGGER.debug("Loading Primare platform")
+
 DEFAULT_NAME = 'Primare Receiver'
 DEFAULT_MIN_VOLUME = 0
 DEFAULT_MAX_VOLUME = 79
