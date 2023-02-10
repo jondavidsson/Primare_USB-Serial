@@ -1,6 +1,6 @@
 {
-  "domain": "marantzusb",
-  "name": "Marantz",
+  "domain": "primareusb",
+  "name": "Primare",
   "documentation": "https://github.com/Imperial-Guard/marantz_tcp",
   "dependencies": [],
   "codeowners": [],

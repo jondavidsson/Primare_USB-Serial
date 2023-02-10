@@ -48,7 +48,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 
 def setup_platform(hass, config, add_devices, discovery_info=None):
     """Set up the Marantz platform."""
-    from marantz_receiver import MarantzReceiver
+    from primare_receiver import MarantzReceiver
     add_devices([Marantz(
         config.get(CONF_NAME),
         MarantzReceiver(config.get(CONF_SERIAL_PORT)),
@@ -62,11 +62,11 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
 class Marantz(MediaPlayerEntity):
     """Representation of a Marantz Receiver."""
 
-    def __init__(self, name, marantz_receiver, min_volume, max_volume,
+    def __init__(self, name, primare_receiver, min_volume, max_volume,
                  source_dict, sound_mode_dict):
         """Initialize the Marantz Receiver device."""
         self._name = name
-        self._marantz_receiver = marantz_receiver
+        self._primare_receiver = primare_receiver
         self._min_volume = min_volume
         self._max_volume = max_volume
         self._source_dict = source_dict
@@ -108,24 +108,24 @@ class Marantz(MediaPlayerEntity):
 
     def update(self):
         """Retrieve latest state."""
-        if self._marantz_receiver.main_power(':', '?') == '1':
+        if self._primare_receiver.main_power(':', '?') == '1':
             self._state = STATE_OFF
         else:
             self._state = STATE_ON
 
-        if self._marantz_receiver.main_mute(':', '?') == '1':
+        if self._primare_receiver.main_mute(':', '?') == '1':
             self._mute = False
         else:
             self._mute = True
 
-        volume_result = self._marantz_receiver.main_volume(':', '?')
+        volume_result = self._primare_receiver.main_volume(':', '?')
         if (volume_result != None):
             self._volume = self.calc_volume(volume_result)
             
         self._source = self._source_dict.get(
-            self._marantz_receiver.main_source(':', '?'))
+            self._primare_receiver.main_source(':', '?'))
         self._sound_mode = self._sound_mode_dict.get(
-            self._marantz_receiver.main_sound_mode(':', '?'))
+            self._primare_receiver.main_sound_mode(':', '?'))
 
     @property
     def volume_level(self):
@@ -144,39 +144,39 @@ class Marantz(MediaPlayerEntity):
 
     def turn_off(self):
         """Turn the media player off."""
-        self._marantz_receiver.main_power(':', '3')
+        self._primare_receiver.main_power(':', '3')
 
     def turn_on(self):
         """Turn the media player on."""
-        self._marantz_receiver.main_power(':', '2')
+        self._primare_receiver.main_power(':', '2')
 
     def volume_up(self):
         """Volume up the media player."""
-        self._marantz_receiver.main_volume(':', '1')
+        self._primare_receiver.main_volume(':', '1')
 
     def volume_down(self):
         """Volume down the media player."""
-        self._marantz_receiver.main_volume(':', '2')
+        self._primare_receiver.main_volume(':', '2')
 
     def set_volume_level(self, volume):
         """Set volume level, range 0..1."""
         vol_calc = '0' + str(self.calc_db(volume))
-        self._marantz_receiver.main_volume(':', vol_calc)
+        self._primare_receiver.main_volume(':', vol_calc)
 
     def select_source(self, source):
         """Select input source."""
-        self._marantz_receiver.main_source(':', self._reverse_mapping.get(source))
+        self._primare_receiver.main_source(':', self._reverse_mapping.get(source))
 
     def select_sound_mode(self, sound_mode):
         """Select sound mode."""
-        self._marantz_receiver.main_sound_mode(':', self._reverse_mapping_sound_mode.get(sound_mode))
+        self._primare_receiver.main_sound_mode(':', self._reverse_mapping_sound_mode.get(sound_mode))
         
     def mute_volume(self, mute):
         """Mute (true) or unmute (false) media player."""
         if mute:
-            self._marantz_receiver.main_mute('W', '\x89\x01')
+            self._primare_receiver.main_mute('W', '\x89\x01')
         else:
-            self._marantz_receiver.main_mute('W', '\x89\x00')
+            self._primare_receiver.main_mute('W', '\x89\x00')
             
     @property
     def source(self):
