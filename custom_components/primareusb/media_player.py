@@ -1,5 +1,5 @@
 """
-Support for interfacing with Marantz receivers through RS-232.
+Support for interfacing with Primare receivers through RS-232.
 
 For more details about this platform, please refer to the documentation at
 
@@ -47,11 +47,11 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 
 
 def setup_platform(hass, config, add_devices, discovery_info=None):
-    """Set up the Marantz platform."""
-    from primare_receiver import MarantzReceiver
-    add_devices([Marantz(
+    """Set up the Primare platform."""
+    from primare_receiver import PrimareReceiver
+    add_devices([Primare(
         config.get(CONF_NAME),
-        MarantzReceiver(config.get(CONF_SERIAL_PORT)),
+        PrimareReceiver(config.get(CONF_SERIAL_PORT)),
         config.get(CONF_MIN_VOLUME),
         config.get(CONF_MAX_VOLUME),
         config.get(CONF_SOURCE_DICT),
@@ -59,12 +59,12 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     )], True)
 
 
-class Marantz(MediaPlayerEntity):
-    """Representation of a Marantz Receiver."""
+class Primare(MediaPlayerEntity):
+    """Representation of a Primare Receiver."""
 
     def __init__(self, name, primare_receiver, min_volume, max_volume,
                  source_dict, sound_mode_dict):
-        """Initialize the Marantz Receiver device."""
+        """Initialize the Primare Receiver device."""
         self._name = name
         self._primare_receiver = primare_receiver
         self._min_volume = min_volume

@@ -1,7 +1,7 @@
 {
   "domain": "primareusb",
   "name": "Primare",
-  "documentation": "https://github.com/Imperial-Guard/marantz_tcp",
+  "documentation": "https://github.com/jondavidsson/Primare_USB-Serial",
   "dependencies": [],
   "codeowners": [],
   "requirements": [],

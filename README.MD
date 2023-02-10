@@ -1,12 +1,12 @@
-# Marantz Mediaplayer Component
+# Primare Mediaplayer Component
 This is a Custom Component for Home-Assistant (https://home-assistant.io).
 
-You can read and control a Marantz reciever, this is working in combination with a USB to Serial converter
+You can read and control a Primare reciever, this is working in combination with a USB to Serial converter
 
 ## Installation
 
 ### Manual
-- Copy directory `marantzusb` to your `<config dir>/custom_components` directory.
+- Copy directory `primareusb` to your `<config dir>/custom_components` directory.
 - Copy directory `primare_receiver` to your `<config dir>/deps/lib/python3.9/site-packages` or '<config dir>/lib/python3.9/site-packages/' directory.
 - Configure with config below.
 - Restart Home-Assistant.
@@ -18,7 +18,7 @@ To use this component in your installation, add the following to your `configura
 # Example configuration.yaml entry
 
 media_player: 
-  - platform: marantzusb
+  - platform: primareusb
     serial_port: /dev/ttyUSB0
     sources:
       2: 'TV'
@@ -35,6 +35,6 @@ Configuration variables:
 
 - **serial_port** (*Required*): The USB port on which the USB to Serial can be reached.
 - **sources** (*Required*): This is depending on your own set-up.
-- **name** (*Optional*): Name of the device. (default = 'Marantz Receiver')
+- **name** (*Optional*): Name of the device. (default = 'Primare Receiver')
 - **min_volume** (*Optional*): Minimal volume of the reciever, will also appear on the volume slider from 0-100% (default = '-71')
 - **max_volume** (*Optional*): Maximal volume of the reciever, will also appear on the volume slider from 0-100%  (default = '-1')
