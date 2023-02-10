@@ -108,24 +108,24 @@ class Primare(MediaPlayerEntity):
 
     def update(self):
         """Retrieve latest state."""
-        if self._primare_receiver.main_power(':', '?') == '1':
+        if self._primare_receiver.main_power('W', 'R') == '1':
             self._state = STATE_OFF
         else:
             self._state = STATE_ON
 
-        if self._primare_receiver.main_mute(':', '?') == '1':
+        if self._primare_receiver.main_mute('W', 'R') == '1':
             self._mute = False
         else:
             self._mute = True
 
-        volume_result = self._primare_receiver.main_volume(':', '?')
+        volume_result = self._primare_receiver.main_volume('W', 'R')
         if (volume_result != None):
             self._volume = self.calc_volume(volume_result)
             
         self._source = self._source_dict.get(
-            self._primare_receiver.main_source(':', '?'))
+            self._primare_receiver.main_source('W', 'R'))
         self._sound_mode = self._sound_mode_dict.get(
-            self._primare_receiver.main_sound_mode(':', '?'))
+            self._primare_receiver.main_sound_mode('W', 'R'))
 
     @property
     def volume_level(self):
@@ -144,32 +144,32 @@ class Primare(MediaPlayerEntity):
 
     def turn_off(self):
         """Turn the media player off."""
-        self._primare_receiver.main_power(':', '3')
+        self._primare_receiver.main_power('W', '3')
 
     def turn_on(self):
         """Turn the media player on."""
-        self._primare_receiver.main_power(':', '2')
+        self._primare_receiver.main_power('W', '2')
 
     def volume_up(self):
         """Volume up the media player."""
-        self._primare_receiver.main_volume(':', '1')
+        self._primare_receiver.main_volume('W', '1')
 
     def volume_down(self):
         """Volume down the media player."""
-        self._primare_receiver.main_volume(':', '2')
+        self._primare_receiver.main_volume('W', '2')
 
     def set_volume_level(self, volume):
         """Set volume level, range 0..1."""
         vol_calc = '0' + str(self.calc_db(volume))
-        self._primare_receiver.main_volume(':', vol_calc)
+        self._primare_receiver.main_volume('W', vol_calc)
 
     def select_source(self, source):
         """Select input source."""
-        self._primare_receiver.main_source(':', self._reverse_mapping.get(source))
+        self._primare_receiver.main_source('W', self._reverse_mapping.get(source))
 
     def select_sound_mode(self, sound_mode):
         """Select sound mode."""
-        self._primare_receiver.main_sound_mode(':', self._reverse_mapping_sound_mode.get(sound_mode))
+        self._primare_receiver.main_sound_mode('W', self._reverse_mapping_sound_mode.get(sound_mode))
         
     def mute_volume(self, mute):
         """Mute (true) or unmute (false) media player."""
