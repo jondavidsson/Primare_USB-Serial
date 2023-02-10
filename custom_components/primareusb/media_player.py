@@ -22,9 +22,9 @@ import homeassistant.helpers.config_validation as cv
 
 _LOGGER = logging.getLogger(__name__)
 
-DEFAULT_NAME = 'Marantz Receiver'
-DEFAULT_MIN_VOLUME = -71
-DEFAULT_MAX_VOLUME = -1
+DEFAULT_NAME = 'Primare Receiver'
+DEFAULT_MIN_VOLUME = 0
+DEFAULT_MAX_VOLUME = 79
 
 SUPPORT_MARANTZ = SUPPORT_VOLUME_SET | SUPPORT_VOLUME_MUTE | \
     SUPPORT_TURN_ON | SUPPORT_TURN_OFF | SUPPORT_VOLUME_STEP | \
