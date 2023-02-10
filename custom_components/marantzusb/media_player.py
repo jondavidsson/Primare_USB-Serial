@@ -174,9 +174,9 @@ class Marantz(MediaPlayerEntity):
     def mute_volume(self, mute):
         """Mute (true) or unmute (false) media player."""
         if mute:
-            self._marantz_receiver.main_mute(':', '2')
+            self._marantz_receiver.main_mute('W', '\x89\x01')
         else:
-            self._marantz_receiver.main_mute(':', '1')
+            self._marantz_receiver.main_mute('W', '\x89\x00')
             
     @property
     def source(self):
