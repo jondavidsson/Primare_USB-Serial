@@ -5,6 +5,5 @@
   "dependencies": [],
   "codeowners": [],
   "requirements": [],
-  "version": "1.0.4",
-  "loggers": ["custom_components.primareusb"]
+  "version": "1.0.4"
 }

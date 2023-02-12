@@ -175,6 +175,7 @@ class Primare(MediaPlayerEntity):
         
     def mute_volume(self, mute):
         """Mute (true) or unmute (false) media player."""
+        _LOGGER.debug("Clicked mute")
         if mute:
             self._primare_receiver.main_mute('W', '\x01')
         else:
