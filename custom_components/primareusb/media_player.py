@@ -50,7 +50,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 
 def setup_platform(hass, config, add_devices, discovery_info=None):
     """Set up the Primare platform."""
-    from primare_receiver import PrimareReceiver
+    from primare_preamp import PrimareReceiver
     add_devices([Primare(
         config.get(CONF_NAME),
         PrimareReceiver(config.get(CONF_SERIAL_PORT)),
@@ -64,11 +64,11 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
 class Primare(MediaPlayerEntity):
     """Representation of a Primare Receiver."""
 
-    def __init__(self, name, primare_receiver, min_volume, max_volume,
+    def __init__(self, name, primare_preamp, min_volume, max_volume,
                  source_dict, sound_mode_dict):
         """Initialize the Primare Receiver device."""
         self._name = name
-        self._primare_receiver = primare_receiver
+        self._primare_receiver = primare_preamp
         self._min_volume = min_volume
         self._max_volume = max_volume
         self._source_dict = source_dict

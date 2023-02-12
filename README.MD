@@ -7,7 +7,7 @@ You can read and control a Primare reciever, this is working in combination with
 
 ### Manual
 - Copy directory `primareusb` to your `<config dir>/custom_components` directory.
-- Copy directory `primare_receiver` to your `<config dir>/deps/lib/python3.10/site-packages` or '<config dir>/lib/python3.10/site-packages/' directory.
+- Copy directory `primare_preamp` to your `<config dir>/deps/lib/python3.10/site-packages` or '<config dir>/lib/python3.10/site-packages/' directory.
 - Configure with config below.
 - Restart Home-Assistant.
 
