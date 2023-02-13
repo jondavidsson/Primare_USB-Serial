@@ -1,5 +1,5 @@
 """
-Support for interfacing with Primare receivers through RS-232.
+Support for interfacing with Primare preamps through RS-232.
 
 For more details about this platform, please refer to the documentation at
 
@@ -24,11 +24,11 @@ _LOGGER = logging.getLogger(__name__)
 
 _LOGGER.debug("Loading Primare platform 1.0.0")
 
-DEFAULT_NAME = 'Primare Receiver'
+DEFAULT_NAME = 'Primare Preamp'
 DEFAULT_MIN_VOLUME = 0
 DEFAULT_MAX_VOLUME = 79
 
-SUPPORT_MARANTZ = SUPPORT_VOLUME_SET | SUPPORT_VOLUME_MUTE | \
+SUPPORT_PRIMARE = SUPPORT_VOLUME_SET | SUPPORT_VOLUME_MUTE | \
     SUPPORT_TURN_ON | SUPPORT_TURN_OFF | SUPPORT_VOLUME_STEP 
 
 CONF_SERIAL_PORT = 'serial_port'
@@ -45,22 +45,22 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 
 def setup_platform(hass, config, add_devices, discovery_info=None):
     """Set up the Primare platform."""
-    from primare_preamp import PrimareReceiver
+    from primare_preamp import PrimarePreamp
     add_devices([Primare(
         config.get(CONF_NAME),
-        PrimareReceiver(config.get(CONF_SERIAL_PORT)),
+        PrimarePreamp(config.get(CONF_SERIAL_PORT)),
         config.get(CONF_MIN_VOLUME),
         config.get(CONF_MAX_VOLUME),
     )], True)
 
 
 class Primare(MediaPlayerEntity):
-    """Representation of a Primare Receiver."""
+    """Representation of a Primare Preamp."""
 
     def __init__(self, name, primare_preamp, min_volume, max_volume):
-        """Initialize the Primare Receiver device."""
+        """Initialize the Primare Preamp device."""
         self._name = name
-        self._primare_receiver = primare_preamp
+        self._primare_preamp = primare_preamp
         self._min_volume = min_volume
         self._max_volume = max_volume
 
@@ -94,21 +94,23 @@ class Primare(MediaPlayerEntity):
         """Return the state of the device."""
         return self._state
 
-    def update(self):
-        """Retrieve latest state."""
-        if self._primare_receiver.main_power('W', 'R') == '\x00':
-            self._state = STATE_OFF
-        else:
-            self._state = STATE_ON
+    # def update(self):
+    #     """Retrieve latest state."""
+    #     if self._primare_preamp.main_power('W', 'R') == '\x00':
+    #         self._state = STATE_OFF
+    #     else:
+    #         self._state = STATE_ON
 
-        if self._primare_receiver.main_mute('W', 'R') == '\x01':
-            self._mute = False
-        else:
-            self._mute = True
+    #     if self._primare_preamp.main_mute('W', 'R') == '\x01':
+    #         self._mute = False
+    #     else:
+    #         self._mute = True
 
-        volume_result = self._primare_receiver.main_volume('W', 'R')
-        if (volume_result != None):
-            self._volume = self.calc_volume(volume_result)
+    #     #volume_result = self._primare_preamp.main_volume('W', 'R')
+    #     volume_result = 0.5
+    #     if (volume_result != None):
+    #         #self._volume = self.calc_volume(volume_result)
+    #         self._volume = volume_result
 
     @property
     def volume_level(self):
@@ -123,35 +125,37 @@ class Primare(MediaPlayerEntity):
     @property
     def supported_features(self):
         """Flag media player features that are supported."""
-        return SUPPORT_MARANTZ
+        return SUPPORT_PRIMARE
 
     def turn_off(self):
         """Turn the media player off."""
-        self._primare_receiver.main_power('W', '\x00')
+        self._primare_preamp.main_power('W', '\x00')
 
     def turn_on(self):
         """Turn the media player on."""
-        self._primare_receiver.main_power('W', '\x01')
+        self._primare_preamp.main_power('W', '\x01')
 
     def volume_up(self):
         """Volume up the media player."""
         _LOGGER.debug("Clicked volume up")
-        self._primare_receiver.main_volume('W', '\x01')
+        self._primare_preamp.main_volume('W', '\x01')
 
     def volume_down(self):
         """Volume down the media player."""
         _LOGGER.debug("Clicked volume down")
-        self._primare_receiver.main_volume('W', '\xff')
+        self._primare_preamp.main_volume('W', '\xff')
 
     def set_volume_level(self, volume):
         """Set volume level, range 0..1."""
-        vol_calc = '0' + str(self.calc_db(volume))
-        self._primare_receiver.main_volume('W', vol_calc)
+        vol_calc = int(float(volume*0.79*100))
+        vol_calc = chr(vol_calc)
+        _LOGGER.debug("Main volume by slider %s", vol_calc)
+        self._primare_preamp.main_volumeset('W', vol_calc)
         
     def mute_volume(self, mute):
         """Mute (true) or unmute (false) media player."""
         _LOGGER.debug("Clicked mute")
         if mute:
-            self._primare_receiver.main_mute('W', '\x01')
+            self._primare_preamp.main_mute('W', '\x01')
         else:
-            self._primare_receiver.main_mute('W', '\x00')
+            self._primare_preamp.main_mute('W', '\x00')
