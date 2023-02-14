@@ -64,7 +64,9 @@ class Primare(MediaPlayerEntity):
         self._min_volume = min_volume
         self._max_volume = max_volume
 
-        self._volume = self._state = self._mute = None
+        self._volume = 0.2
+        self._state = STATE_ON
+        self._mute = False
 
     def calc_volume(self, decibel):
         """
@@ -96,10 +98,11 @@ class Primare(MediaPlayerEntity):
 
     # def update(self):
     #     """Retrieve latest state."""
-    #     if self._primare_preamp.main_power('W', 'R') == '\x00':
-    #         self._state = STATE_OFF
-    #     else:
-    #         self._state = STATE_ON
+    #     _LOGGER.debug("Returned value %s", self._primare_preamp.main_volume_set)
+        # if self._primare_preamp.main_power == '0':
+        #     self._state = STATE_OFF
+        # else:
+        #     self._state = STATE_ON
 
     #     if self._primare_preamp.main_mute('W', 'R') == '\x01':
     #         self._mute = False
@@ -129,11 +132,15 @@ class Primare(MediaPlayerEntity):
 
     def turn_off(self):
         """Turn the media player off."""
+        _LOGGER.debug("Clicked turn off")
         self._primare_preamp.main_power('W', '\x00')
+        self._state = STATE_OFF
 
     def turn_on(self):
         """Turn the media player on."""
+        _LOGGER.debug("Clicked turn on")
         self._primare_preamp.main_power('W', '\x01')
+        self._state = STATE_ON
 
     def volume_up(self):
         """Volume up the media player."""
@@ -148,14 +155,19 @@ class Primare(MediaPlayerEntity):
     def set_volume_level(self, volume):
         """Set volume level, range 0..1."""
         vol_calc = int(float(volume*0.79*100))
+        vol_return = int(vol_calc/0.79)
+        vol_return = vol_return/100
         vol_calc = chr(vol_calc)
         _LOGGER.debug("Main volume by slider %s", vol_calc)
-        self._primare_preamp.main_volumeset('W', vol_calc)
+        self._primare_preamp.main_volume_set('W', vol_calc)
+        self._volume = vol_return
         
     def mute_volume(self, mute):
         """Mute (true) or unmute (false) media player."""
         _LOGGER.debug("Clicked mute")
         if mute:
             self._primare_preamp.main_mute('W', '\x01')
+            self._mute = True
         else:
             self._primare_preamp.main_mute('W', '\x00')
+            self._mute = False
