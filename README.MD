@@ -20,15 +20,6 @@ To use this component in your installation, add the following to your `configura
 media_player: 
   - platform: primareusb
     serial_port: /dev/ttyUSB0
-    sources:
-      2: 'TV'
-      3: 'Chromecast'
-      G: 'FM'
-    soundmode:
-      '0' : 'Auto'
-      '1' : 'Stereo'
-      'T' : 'Source Direct'
-      'U' : 'Pure Direct'
 ```
 
 Configuration variables:
