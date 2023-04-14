@@ -27,5 +27,5 @@ Configuration variables:
 - **serial_port** (*Required*): The USB port on which the USB to Serial can be reached.
 - **sources** (*Required*): This is depending on your own set-up.
 - **name** (*Optional*): Name of the device. (default = 'Primare Preamp')
-- **min_volume** (*Optional*): Minimal volume of the reciever, will also appear on the volume slider from 0-100% (default = '-71')
-- **max_volume** (*Optional*): Maximal volume of the reciever, will also appear on the volume slider from 0-100%  (default = '-1')
+- **min_volume** (*Optional*): Minimal volume of the reciever, will also appear on the volume slider from 0-100% (default = '79')
+- **max_volume** (*Optional*): Maximal volume of the reciever, will also appear on the volume slider from 0-100%  (default = '0')
